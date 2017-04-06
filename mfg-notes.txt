@@ -1,0 +1,3 @@
+docker create --cap-add=NET_ADMIN -e OPENVPN_USERNAME=nobody -e OPENVPN_PASSWORD=none -e OPENVPN_PROVIDER=CUSTOM -v /home/mgering/AirVPN/AirVPN_America_UDP-443.ovpn:/etc/openvpn/custom/default.ovpn openvpn
+
+docker run -it --cap-add=NET_ADMIN -e OPENVPN_USERNAME=nobody -e OPENVPN_PASSWORD=none -e OPENVPN_PROVIDER=CUSTOM -v /home/mgering/AirVPN/AirVPN_America_UDP-443.ovpn:/etc/openvpn/custom/default.ovpn openvpn bash
