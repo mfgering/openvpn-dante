@@ -13,7 +13,7 @@ RUN apt-get update \
     && apt-get -y install software-properties-common \
     && add-apt-repository multiverse \
     && apt-get update \
-    && apt-get install -y openvpn curl rar unrar zip unzip wget \
+    && apt-get install -y openvpn curl rar unrar zip unzip wget openssh-server \
     && curl -sLO https://github.com/Yelp/dumb-init/releases/download/v1.0.1/dumb-init_1.0.1_amd64.deb \
     && dpkg -i dumb-init_*.deb \
     && rm -rf dumb-init_*.deb \
@@ -22,7 +22,11 @@ RUN apt-get update \
     && groupmod -g 1000 users \
     && useradd -u 911 -U -d /config -s /bin/false abc \
     && usermod -G users abc
+    && true
 
+RUN mkdir /var/run/sshd    
+RUN echo 'root:screencast' | chpasswd
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 ADD openvpn/ /etc/openvpn/
 
 ENV OPENVPN_USERNAME=**None** \
@@ -32,5 +36,6 @@ ENV OPENVPN_USERNAME=**None** \
     PGID=
 
 # Expose port and run
+EXPOSE 22 9999
 CMD ["dumb-init", "/etc/openvpn/start.sh"]
 #CMD ["/bin/bash"]
