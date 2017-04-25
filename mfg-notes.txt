@@ -1,5 +1,13 @@
-docker create --cap-add=NET_ADMIN -e OPENVPN_USERNAME=nobody -e OPENVPN_PASSWORD=none -e OPENVPN_PROVIDER=CUSTOM -v /home/mgering/AirVPN/AirVPN_America_UDP-443.ovpn:/etc/openvpn/custom/default.ovpn openvpn
+docker build -t mgering/openvpn-dante .
 
-docker run -it --cap-add=NET_ADMIN -e OPENVPN_USERNAME=nobody -e OPENVPN_PASSWORD=none -e OPENVPN_PROVIDER=CUSTOM -v /home/mgering/AirVPN/AirVPN_America_UDP-443.ovpn:/etc/openvpn/custom/default.ovpn openvpn bash
+docker create -p 1080:1080 --cap-add=NET_ADMIN -e OPENVPN_USERNAME=nobody -e OPENVPN_PASSWORD=none -e OPENVPN_PROVIDER=CUSTOM -v /home/mgering/AirVPN/AirVPN_America_UDP-443.ovpn:/etc/openvpn/custom/default.ovpn mgering/openvpn-dante
+
+docker run -p 1080:1080 -it --cap-add=NET_ADMIN -e OPENVPN_USERNAME=nobody -e OPENVPN_PASSWORD=none -e OPENVPN_PROVIDER=CUSTOM -v /home/mgering/AirVPN/AirVPN_America_UDP-443.ovpn:/etc/openvpn/custom/default.ovpn mgering/openvpn-dante bash
 
 docker run -it --cap-add=NET_ADMIN -e OPENVPN_USERNAME=nobody -e OPENVPN_PASSWORD=none -e OPENVPN_PROVIDER=CUSTOM -v /home/mgering/AirVPN/AirVPN_America_UDP-443.ovpn:/etc/openvpn/custom/default.ovpn openvpn-sshd bash
+
+netstat -tlnp
+
+curl --socks5 localhost:1080 binfalse.de
+
+curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'  

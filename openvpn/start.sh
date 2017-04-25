@@ -41,4 +41,4 @@ mkdir -p /dev/net
 if [ ! -c /dev/net/tun ]; then
     mknod /dev/net/tun c 10 200
 fi
-exec openvpn $OPENVPN_OPTS --config "$OPENVPN_CONFIG"
+exec openvpn --script-security 3 system --up "/etc/openvpn/start_socks $CFGFILE $PIDFILE $WORKERS" $OPENVPN_OPTS --config "$OPENVPN_CONFIG"

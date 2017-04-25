@@ -1,0 +1,6 @@
+#!/bin/bash
+TUN_DEV=$4
+CFG_FILE=$1
+sed -i "s/tun[[:digit:]]/$TUN_DEV/" $CFG_FILE
+echo /usr/local/sbin/sockd -f $1 -p $2 -N $3
+/usr/local/sbin/sockd -D -f $1 -p $2 -N $3
